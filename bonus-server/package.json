@@ -1,0 +1,14 @@
+{
+  "name": "expoin-bonus-server",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "ethers": "^6.16.0",
+    "express": "^4.21.2"
+  }
+}

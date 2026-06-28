@@ -1,0 +1,17 @@
+node_modules/
+**/node_modules/
+build/
+**/build/
+dist/
+**/dist/
+coverage/
+**/coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+*.tgz
+*.zip
+community-campaign-preview.png
+bonus-server/data/*.json
+!bonus-server/data/.gitkeep

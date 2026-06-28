@@ -1,0 +1,33 @@
+User-agent: Googlebot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# ClaudeBot is used for Anthropic model training. We allow it for public brand discoverability.
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# GPTBot is used for OpenAI model training, not ChatGPT Search. We allow it for public brand discoverability.
+User-agent: GPTBot
+Allow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://expoin.net/sitemap.xml
