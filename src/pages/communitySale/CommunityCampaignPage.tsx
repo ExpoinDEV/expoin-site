@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from 'react';
-import {ArrowRight, CheckCircle2, Copy, ShieldCheck, WalletCards} from 'lucide-react';
+import {ArrowRight, CheckCircle2, ShieldCheck, WalletCards} from 'lucide-react';
 import {Link, useParams} from 'react-router-dom';
 import PromoLiveSaleWidget from '../../components/sale/PromoLiveSaleWidget';
 import {Eyebrow, PageSection, SectionShell, SpotlightCard} from '../../components/pages/PagePrimitives';
@@ -47,10 +47,6 @@ function normalizeSlug(value = 'community') {
   return slugAliases[clean] || clean;
 }
 
-function campaignUrl(rule: BonusRule) {
-  return `https://expoin.net/sale/community/${rule.id}`;
-}
-
 function formatBonus(rule: BonusRule) {
   return rule.bonusMode === 'percent' ? `${rule.bonusValue}%` : `${rule.bonusValue} EXN`;
 }
@@ -85,7 +81,6 @@ export default function CommunityCampaignPage() {
   const {slug: rawSlug = 'community'} = useParams();
   const slug = normalizeSlug(rawSlug);
   const [rules, setRules] = useState<BonusRule[]>(previewRules);
-  const [copiedRuleId, setCopiedRuleId] = useState<string | null>(null);
 
   const activeRules = useMemo(() => rules.filter((rule) => rule.enabled), [rules]);
   const rule = useMemo(() => {
@@ -132,18 +127,6 @@ export default function CommunityCampaignPage() {
       source: analyticsSource,
     });
   }, [analyticsSource, rule.id, rule.watchedTokenSymbol]);
-
-  function copyLink(item: BonusRule) {
-    const url = campaignUrl(item);
-    navigator.clipboard.writeText(url);
-    setCopiedRuleId(item.id);
-    window.setTimeout(() => setCopiedRuleId(null), 1600);
-    pushToDataLayer('community_sale_link_copy', {
-      community_slug: item.id,
-      token_symbol: item.watchedTokenSymbol,
-      url,
-    });
-  }
 
   return (
     <div className="pt-20 sm:pt-24">
@@ -246,39 +229,6 @@ export default function CommunityCampaignPage() {
               </p>
             </div>
             <PromoLiveSaleWidget analyticsSource={analyticsSource} enableCommunityBonus communityRuleId={rule.id === 'community' ? undefined : rule.id} />
-          </SpotlightCard>
-        </SectionShell>
-      </PageSection>
-
-      <PageSection className="bg-[#030303]/60 backdrop-blur-xl">
-        <SectionShell>
-          <SpotlightCard className="p-8 lg:p-10">
-            <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <div className="text-xs font-mono uppercase tracking-[0.22em] text-[#38BDF8]">Ad links from bonus admin</div>
-                <h2 className="mt-3 text-4xl font-semibold tracking-tight text-white">Campaign URLs for every active token.</h2>
-              </div>
-              <div className="text-sm text-white/45">{activeRules.length} active rules</div>
-            </div>
-
-            <div className="grid gap-3">
-              {activeRules.map((item) => (
-                <div key={item.id} className="grid gap-4 rounded-[24px] border border-white/10 bg-white/[0.03] p-4 lg:grid-cols-[minmax(180px,0.6fr)_minmax(0,1fr)_auto] lg:items-center">
-                  <TokenBadge rule={item} />
-                  <div className="min-w-0 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 font-mono text-xs text-white/55">
-                    <span className="block truncate">{campaignUrl(item)}</span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => copyLink(item)}
-                    className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#38BDF8]/25 bg-[#38BDF8]/10 px-5 text-sm font-semibold text-[#38BDF8] transition-colors hover:bg-[#38BDF8]/15"
-                  >
-                    <Copy className="h-4 w-4" />
-                    {copiedRuleId === item.id ? 'Copied' : 'Copy'}
-                  </button>
-                </div>
-              ))}
-            </div>
           </SpotlightCard>
         </SectionShell>
       </PageSection>
